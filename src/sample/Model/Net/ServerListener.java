@@ -20,7 +20,7 @@ public class ServerListener {
             while (listening){
                 Socket clientSocket = socket.accept();
                 if (currentClientHandler == null){
-                    currentClientHandler = new ClientHandler(clientSocket);
+                    currentClientHandler = new ClientHandler(clientSocket, null);
                 }
             }
 
