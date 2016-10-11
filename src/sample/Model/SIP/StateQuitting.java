@@ -1,9 +1,18 @@
 package sample.Model.SIP;
 
+import sample.Model.Net.ClientHandler;
+
 /**
  * Created by Anton on 2016-10-11.
  */
 public class StateQuitting extends SipState {
+
+    @Override
+    SipState receivedByeOk(ClientHandler remote){
+
+        return new StateIdling();
+    }
+
     @Override
     String getStateName() {
         return null;
