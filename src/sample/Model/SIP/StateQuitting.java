@@ -7,6 +7,10 @@ import sample.Model.Net.ClientHandler;
  */
 public class StateQuitting extends SipState {
 
+    public StateQuitting(){
+        System.out.println("Quitting.");
+    }
+
     @Override
     SipState receivedByeOk(ClientHandler remote){
 

@@ -10,6 +10,8 @@ import javafx.stage.WindowEvent;
 import sample.Controller.Controller;
 import sample.Model.Net.ServerListener;
 
+import java.io.IOException;
+
 public class Main extends Application {
 
     @Override
@@ -22,11 +24,23 @@ public class Main extends Application {
         Controller controller = loader.getController();
         ServerListener serverListener = new ServerListener();
         serverListener.setController(controller);
-        serverListener.start();
+        Thread t = new Thread(){
+            @Override
+            public void run() {
+                try {
+                    serverListener.start();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        t.start();
+        controller.setServerListener(serverListener);
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent event) {
-                // Do close stuff.
+                serverListener.disconnectClient();
+                serverListener.stopListening();
             }
         });
 

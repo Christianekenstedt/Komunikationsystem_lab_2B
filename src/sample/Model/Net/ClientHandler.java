@@ -3,10 +3,7 @@ package sample.Model.Net;
 import sample.Controller.Controller;
 import sample.Model.SIP.*;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.*;
 
 /**
@@ -17,15 +14,17 @@ public class ClientHandler {
     private Socket socket;
     private boolean receiving = true;
     private BufferedReader in;
-    private DataOutputStream out;
+    private PrintWriter out;
     private Controller controller;
+    private ServerListener listener;
 
-    public ClientHandler(Socket clientSocket, Controller controller) throws IOException {
+    public ClientHandler(Socket clientSocket, Controller controller, ServerListener listener) throws IOException {
+        this.listener = listener;
         this.controller = controller;
         this.socket = clientSocket;
         this.sipHandler = new SipHandler(this);
         this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        this.out = new DataOutputStream(socket.getOutputStream());
+        this.out = new PrintWriter(socket.getOutputStream(), true);
         Thread t = new Thread(){
             @Override
             public void run() {
@@ -36,43 +35,39 @@ public class ClientHandler {
     }
 
     private void receive(){
+        System.out.println("Started listening.");
         while(receiving){
+
             try {
                 String msg = in.readLine();
 
                 if(msg!=null){
+                    System.out.println("Received: " + msg);
                     sipHandler.processNextState(msg);
+                }else{
+                    listener.disconnectClient();
                 }
 
             } catch (IOException e) {
                 e.printStackTrace();
-                stop();
+                listener.disconnectClient();
             }
         }
     }
 
+    public void invokeInvite(){
+        sipHandler.invokeInvite();
+    }
+
     public void send(String message){
-        try {
-            out.writeBytes(message);
-        } catch (IOException e) {
-            e.printStackTrace();
-            stop();
-        }
+        System.out.println("Sent: " + message);
+
+        this.out.println(message);
     }
 
     public void stop(){
-        try{
-            if(in!=null)
-                in.close();
-        }catch(IOException e){
-            e.printStackTrace();
-        }
-        try{
-            if(out!=null)
-                out.close();
-        }catch(IOException e){
-            e.printStackTrace();
-        }
+        receiving = false;
+
         try{
             if(socket!=null)
                 socket.close();
@@ -80,6 +75,16 @@ public class ClientHandler {
             e.printStackTrace();
         }
 
-        //reference to ServerListener to notify it that this handler has stopped.
+        try{
+            if(in!=null)
+                in.close();
+        }catch(IOException e){
+            System.out.println("Socket is closed.");
+        }
+
+        if(out!=null)
+            out.close();
+
+
     }
 }

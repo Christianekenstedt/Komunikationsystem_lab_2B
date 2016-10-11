@@ -7,6 +7,10 @@ import sample.Model.Net.ClientHandler;
  */
 public class StateWaiting extends SipState {
 
+    public StateWaiting(){
+        System.out.println("Waiting.");
+    }
+
     @Override
     SipState receivedTRO(ClientHandler remote){
         remote.send("TRO_ACK");

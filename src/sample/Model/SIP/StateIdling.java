@@ -7,10 +7,15 @@ import sample.Model.Net.ClientHandler;
  */
 public class StateIdling extends SipState {
 
+    public StateIdling(){
+        System.out.println("Idling.");
+    }
+
     @Override
     SipState receivedInviteReceived(ClientHandler remote){
         //send tro
         remote.send("TRO");
+
         return new StateRinging();
     }
 

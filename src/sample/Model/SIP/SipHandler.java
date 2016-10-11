@@ -21,11 +21,8 @@ public class SipHandler {
         SipEvent evt = parseMessage(message);
         if(evt!=null){
             switch(evt){
-                case INVITE_SENT:
-                    currentState = currentState.receivedInviteReceived(client);
-                    break;
                 case INVITE_RECEIVED:
-                    currentState = currentState.receivedInvite(client);
+                    currentState = currentState.receivedInviteReceived(client);
                     break;
                 case TRO_ACK_RECEIVED:
                     currentState = currentState.receivedTROAck(client);
@@ -34,9 +31,6 @@ public class SipHandler {
                     currentState = currentState.receivedTRO(client);
                     break;
                 case BYE_RECEIVED:
-                    currentState = currentState.receivedBye(client);
-                    break;
-                case BYE_SENT_RECEIVED:
                     currentState = currentState.receivedByeReceived(client);
                     break;
                 case BYE_OK_RECEIVED:
@@ -69,6 +63,10 @@ public class SipHandler {
             default:
                 return null;
         }
+    }
+
+    public void invokeInvite(){
+        currentState = currentState.receivedInvite(client);
     }
 
     public enum SipEvent{

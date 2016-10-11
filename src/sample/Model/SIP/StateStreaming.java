@@ -7,6 +7,10 @@ import sample.Model.Net.ClientHandler;
  */
 public class StateStreaming extends SipState {
 
+    public StateStreaming(){
+        System.out.println("Streaming.");
+    }
+
     SipState receivedBye(ClientHandler remote){
         return new StateQuitting();
     }

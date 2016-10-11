@@ -7,8 +7,13 @@ import sample.Model.Net.ClientHandler;
  */
 public class StateRinging extends SipState {
 
+    public StateRinging(){
+        System.out.println("Ringing.");
+    }
+
     @Override
     SipState receivedTROAck(ClientHandler remote){
+
         return new StateStreaming();
     }
 
