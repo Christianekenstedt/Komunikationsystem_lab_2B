@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import sample.Controller.Controller;
+import sample.Model.Net.ServerListener;
 
 public class Main extends Application {
 
@@ -19,7 +20,9 @@ public class Main extends Application {
         primaryStage.setScene(new Scene(root, 300, 275));
 
         Controller controller = loader.getController();
-
+        ServerListener serverListener = new ServerListener();
+        serverListener.setController(controller);
+        serverListener.start();
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent event) {
