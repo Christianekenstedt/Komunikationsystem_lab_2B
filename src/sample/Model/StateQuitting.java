@@ -1,10 +1,9 @@
 package sample.Model;
 
 /**
- * Created by chris on 2016-10-11.
+ * Created by Anton on 2016-10-11.
  */
-public class StateStreaming extends SipState {
-
+public class StateQuitting extends SipState {
     @Override
     String getStateName() {
         return null;
