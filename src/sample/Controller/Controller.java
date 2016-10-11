@@ -29,4 +29,8 @@ public class Controller {
 
     }
 
+    void setStatusLabel(String msg){
+        statusLabel.setText(msg);
+    }
+
 }
