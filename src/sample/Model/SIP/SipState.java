@@ -1,4 +1,4 @@
-package sample.Model;
+package sample.Model.SIP;
 
 /**
  * Created by chris on 2016-10-11.
