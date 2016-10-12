@@ -65,6 +65,10 @@ public class ClientHandler {
         this.out.println(message);
     }
 
+    public Controller getController(){
+        return this.controller;
+    }
+
     public void stop(){
         receiving = false;
 

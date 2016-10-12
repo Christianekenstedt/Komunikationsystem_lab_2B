@@ -22,7 +22,8 @@ public class SipHandler {
         if(evt!=null){
             switch(evt){
                 case INVITE_RECEIVED:
-                    currentState = currentState.receivedInviteReceived(client);
+                    client.getController().incommingCallStart();
+                    //currentState = currentState.receivedInviteReceived(client);
                     break;
                 case TRO_ACK_RECEIVED:
                     currentState = currentState.receivedTROAck(client);
@@ -63,6 +64,10 @@ public class SipHandler {
             default:
                 return null;
         }
+    }
+
+    public void invokeAcceptInvite(){
+        currentState = currentState.receivedInviteReceived(client);
     }
 
     public void invokeInvite(){

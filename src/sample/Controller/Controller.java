@@ -41,4 +41,12 @@ public class Controller {
     }
 
     public void setServerListener(ServerListener serverListener){this.serverListener = serverListener;}
+
+    public void incommingCallStart(){
+        //enable call/decline buttons
+    }
+
+    public void incommingCallStop(){
+        //disable call/decline buttons
+    }
 }
