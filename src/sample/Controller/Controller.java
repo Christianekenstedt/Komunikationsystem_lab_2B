@@ -32,7 +32,7 @@ public class Controller {
     @FXML
     void answerBtnPressed(){
         if(serverListener.getCurrentClientHandler() != null){
-            serverListener.getCurrentClientHandler().invokeAcceptInvite();
+            serverListener.invokeAcceptInvite();
         }
         incomingCallStop();
     }
@@ -47,13 +47,14 @@ public class Controller {
 
     @FXML
     void declineBtnPressed(ActionEvent event) {
-        serverListener.disconnectClient();
+        serverListener.invokeBye();
         incomingCallStop();
     }
 
     @FXML
     void byeBtnPressed(ActionEvent event){
-
+        if(serverListener.getCurrentClientHandler()!=null)
+            serverListener.invokeBye();
     }
 
     public void setStatusLabel(String msg){

@@ -12,6 +12,14 @@ public class StateWaiting extends SipState {
     }
 
     @Override
+    SipState receivedByeReceived(ClientHandler remote){
+        remote.send("BYE_OK");
+        remote.disconnect();
+        remote.getController().setStatusLabel("Idling.");
+        return new StateIdling();
+    }
+
+    @Override
     SipState receivedTRO(ClientHandler remote){
         remote.send("TRO_ACK");
 

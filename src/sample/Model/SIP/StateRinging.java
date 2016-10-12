@@ -15,6 +15,7 @@ public class StateRinging extends SipState {
     SipState receivedTROAck(ClientHandler remote){
 
         remote.getController().setStatusLabel("Streaming");
+        //code to start audiostream
         return new StateStreaming();
     }
 

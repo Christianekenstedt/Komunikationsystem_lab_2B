@@ -10,7 +10,6 @@ import java.net.*;
  * Created by Anton on 2016-10-11.
  */
 public class ClientHandler {
-    private SipHandler sipHandler;
     private Socket socket;
     private boolean receiving = true;
     private BufferedReader in;
@@ -18,11 +17,13 @@ public class ClientHandler {
     private Controller controller;
     private ServerListener listener;
 
+    private AudioStreamUDP audioStream;
+    private int remoteAudioStreamPort;
+
     public ClientHandler(Socket clientSocket, Controller controller, ServerListener listener) throws IOException {
         this.listener = listener;
         this.controller = controller;
         this.socket = clientSocket;
-        this.sipHandler = new SipHandler(this);
         this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         this.out = new PrintWriter(socket.getOutputStream(), true);
         Thread t = new Thread(){
@@ -35,7 +36,7 @@ public class ClientHandler {
     }
 
     private void receive(){
-        System.out.println("Started listening.");
+        System.out.println("Started receiving.");
         while(receiving){
 
             try {
@@ -43,8 +44,9 @@ public class ClientHandler {
 
                 if(msg!=null){
                     System.out.println("Received: " + msg);
-                    sipHandler.processNextState(msg);
+                    listener.processRemoteMessage(msg);
                 }else{
+                    System.out.println("Message was null.");
                     listener.disconnectClient();
                 }
 
@@ -55,14 +57,6 @@ public class ClientHandler {
         }
     }
 
-    public void invokeInvite(){
-        sipHandler.invokeInvite();
-    }
-
-    public void invokeAcceptInvite(){
-        sipHandler.invokeAcceptInvite();
-    }
-
     public void send(String message){
         System.out.println("Sent: " + message);
 
@@ -71,6 +65,10 @@ public class ClientHandler {
 
     public Controller getController(){
         return this.controller;
+    }
+
+    public void disconnect(){
+        listener.disconnectClient();
     }
 
     public void stop(){
@@ -92,7 +90,5 @@ public class ClientHandler {
 
         if(out!=null)
             out.close();
-
-
     }
 }

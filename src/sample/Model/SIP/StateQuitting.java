@@ -15,6 +15,7 @@ public class StateQuitting extends SipState {
     SipState receivedByeOk(ClientHandler remote){
 
         remote.getController().setStatusLabel("Idling.");
+        remote.disconnect();
         return new StateIdling();
     }
 

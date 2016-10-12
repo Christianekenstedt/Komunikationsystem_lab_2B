@@ -1,6 +1,7 @@
 package sample.Model.Net;
 
 import sample.Controller.Controller;
+import sample.Model.SIP.SipHandler;
 
 import javax.sound.midi.ControllerEventListener;
 import java.io.IOException;
@@ -18,26 +19,36 @@ public class ServerListener {
     private boolean listening = false;
     private ClientHandler currentClientHandler = null;
     protected Controller controller = null;
+    private SipHandler sipHandler;
 
     public void start() throws IOException {
-        listening = true;
+        this.sipHandler = new SipHandler();
+        this.listening = true;
         try {
             socket = new ServerSocket(PORT);
             System.out.println("Start listening on "+socket.getLocalPort());
             while (listening){
                 Socket clientSocket = socket.accept();
                 if (currentClientHandler == null){
+
                     currentClientHandler = new ClientHandler(clientSocket, controller, this);
                     System.out.println(clientSocket.getInetAddress() +" connected.");
+                }else{
+                    clientSocket.close();
                 }
             }
 
         } catch (IOException e) {
+            System.out.println("hurrdurr");
+            e.printStackTrace();
             System.err.println(e.getMessage());
         }finally {
             if (socket != null) socket.close();
         }
+    }
 
+    public void processRemoteMessage(String msg){
+        sipHandler.processNextState(msg, currentClientHandler);
     }
 
     public void inviteRemoteClient(String ip, int port){
@@ -63,7 +74,7 @@ public class ServerListener {
         try {
             if(currentClientHandler == null){
                 currentClientHandler = new ClientHandler(socket, controller, this);
-                currentClientHandler.invokeInvite();
+                sipHandler.invokeInvite(currentClientHandler);
             }
 
         } catch (IOException e) {
@@ -80,7 +91,6 @@ public class ServerListener {
         currentClientHandler = null;
 
         System.out.println("Client disconnected");
-        controller.setStatusLabel("Available.");
     }
 
     public ClientHandler getCurrentClientHandler(){
@@ -95,6 +105,18 @@ public class ServerListener {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void invokeError(){
+        sipHandler.invokeError(currentClientHandler);
+    }
+
+    public void invokeAcceptInvite(){
+        sipHandler.invokeAcceptInvite(currentClientHandler);
+    }
+
+    public void invokeBye(){
+        sipHandler.invokeBye(currentClientHandler);
     }
 
     public void setController(Controller controller) {

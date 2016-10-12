@@ -28,6 +28,12 @@ public class StateIdling extends SipState {
     }
 
     @Override
+    SipState receivedBye(ClientHandler remote){
+        remote.send("BYE");
+        return new StateQuitting();
+    }
+
+    @Override
     String getStateName() {
         return "Idling";
     }

@@ -7,17 +7,15 @@ import sample.Model.Net.ClientHandler;
  */
 public class SipHandler {
     private SipState currentState;
-    private ClientHandler client;
 
-    public SipHandler(ClientHandler client){
+    public SipHandler(){
         currentState = new StateIdling();
-        this.client = client;
     }
     public String getState(){
         return currentState.getStateName();
     }
 
-    public void processNextState(String message){
+    public void processNextState(String message, ClientHandler client){
         SipEvent evt = parseMessage(message);
         if(evt!=null){
             switch(evt){
@@ -66,11 +64,19 @@ public class SipHandler {
         }
     }
 
-    public void invokeAcceptInvite(){
+    public void invokeError(ClientHandler client){
+        currentState = currentState.receivedError(client);
+    }
+
+    public void invokeBye(ClientHandler client){
+        currentState = currentState.receivedBye(client);
+    }
+
+    public void invokeAcceptInvite(ClientHandler client){
         currentState = currentState.receivedInviteReceived(client);
     }
 
-    public void invokeInvite(){
+    public void invokeInvite(ClientHandler client){
         currentState = currentState.receivedInvite(client);
     }
 
