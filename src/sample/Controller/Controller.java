@@ -24,6 +24,9 @@ public class Controller {
     @FXML
     private Button answerBtn;
 
+    @FXML
+    private Button byeBtn;
+
     private ServerListener serverListener;
 
     @FXML
@@ -46,6 +49,11 @@ public class Controller {
     void declineBtnPressed(ActionEvent event) {
         serverListener.disconnectClient();
         incomingCallStop();
+    }
+
+    @FXML
+    void byeBtnPressed(ActionEvent event){
+
     }
 
     public void setStatusLabel(String msg){

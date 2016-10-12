@@ -16,8 +16,9 @@
             <HBox alignment="CENTER" prefHeight="94.0" prefWidth="300.0" spacing="10.0">
                <children>
                   <Button fx:id="callBtn" mnemonicParsing="false" onAction="#callBtnPressed" text="Call" />
+                  <Button fx:id="byeBtn" mnemonicParsing="false" onAction="#byeBtnPressed" text="Hang up" />
                   <Separator orientation="VERTICAL" prefHeight="200.0" />
-                  <Button fx:id="answerBtn" mnemonicParsing="false" onAction="#answerBtnPressed" text="Answer" disable="true"/>
+                  <Button fx:id="answerBtn" disable="true" mnemonicParsing="false" onAction="#answerBtnPressed" text="Answer" />
                   <Button fx:id="declineBtn" disable="true" mnemonicParsing="false" onAction="#declineBtnPressed" text="Decline" />
                </children>
             </HBox>
