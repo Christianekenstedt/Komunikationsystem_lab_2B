@@ -5,6 +5,7 @@ import sample.Model.SIP.SipHandler;
 
 import javax.sound.midi.ControllerEventListener;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -35,6 +36,10 @@ public class ServerListener {
                     currentClientHandler.setRemoteAddress(clientSocket.getInetAddress());
                     System.out.println(clientSocket.getInetAddress() +" connected.");
                 }else{
+                    PrintWriter pw = new PrintWriter(clientSocket.getOutputStream(), true);
+                    pw.println("BUSY");
+                    pw.flush();
+                    pw.close();
                     clientSocket.close();
                 }
             }
@@ -73,8 +78,8 @@ public class ServerListener {
         try {
             if(currentClientHandler == null){
                 currentClientHandler = new ClientHandler(socket, controller, this);
-                sipHandler.invokeInvite(currentClientHandler);
                 currentClientHandler.setRemoteAddress(socket.getInetAddress());
+                sipHandler.invokeInvite(currentClientHandler);
             }
 
         } catch (IOException e) {

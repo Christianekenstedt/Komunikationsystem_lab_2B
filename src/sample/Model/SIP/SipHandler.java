@@ -11,6 +11,7 @@ public class SipHandler {
     public SipHandler(){
         currentState = new StateIdling();
     }
+
     public String getState(){
         return currentState.getStateName();
     }
@@ -36,6 +37,9 @@ public class SipHandler {
                 case BYE_OK_RECEIVED:
                     currentState = currentState.receivedByeOk(client);
                     break;
+                case BUSY:
+                    currentState = currentState.receivedBusy(client);
+                    break;
                 default:
                     currentState = currentState.receivedError(client);
                     break;
@@ -60,6 +64,8 @@ public class SipHandler {
                 return SipHandler.SipEvent.BYE_RECEIVED;
             case "BYE_OK":
                 return SipHandler.SipEvent.BYE_OK_RECEIVED;
+            case "BUSY":
+                return SipEvent.BUSY;
             default:
                 return null;
         }
@@ -88,6 +94,7 @@ public class SipHandler {
         TRO_RECEIVED,
         BYE_RECEIVED,
         BYE_SENT_RECEIVED,
-        BYE_OK_RECEIVED
+        BYE_OK_RECEIVED,
+        BUSY
     }
 }

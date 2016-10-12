@@ -24,7 +24,7 @@ public class StateIdling extends SipState {
         remote.send("INVITE " + remote.getAudioStream().getLocalPort());
         //start waiting for a tro
         remote.getController().setStatusLabel("Waiting");
-        return new StateWaiting();
+        return new StateWaiting(remote);
     }
 
     @Override

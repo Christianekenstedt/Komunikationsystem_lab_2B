@@ -7,6 +7,7 @@ import sample.Model.Net.ClientHandler;
  */
 public abstract class SipState {
     abstract String getStateName();
+    SipState receivedBusy(ClientHandler remote){remote.disconnect();return new StateIdling();}
     SipState receivedInviteReceived(ClientHandler remote){remote.disconnect();return new StateIdling();}
     SipState receivedInvite(ClientHandler remote){remote.disconnect();return new StateIdling();}
     SipState receivedTRO(ClientHandler remote){remote.disconnect();return new StateIdling();}

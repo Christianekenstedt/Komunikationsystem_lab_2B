@@ -3,6 +3,9 @@ package sample.Model.SIP;
 import sample.Model.Net.AudioStreamUDP;
 import sample.Model.Net.ClientHandler;
 
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 
 /**
@@ -10,13 +13,29 @@ import java.io.IOException;
  */
 public class StateWaiting extends SipState {
 
-    public StateWaiting(){
+    private Timer t;
+
+    public StateWaiting(ClientHandler remote){
         System.out.println("Waiting.");
+        ActionListener al = e -> {
+            System.out.println("NO ANSWER!");
+            receivedBye(remote);
+            t.stop();
+        };
+        t = new Timer(10000, al);
+        t.start();
     }
 
     @Override
     SipState receivedBye(ClientHandler remote){
         remote.send("BYE");
+        remote.disconnect();
+        return new StateIdling();
+    }
+
+    @Override
+    SipState receivedBusy(ClientHandler remote){
+        System.out.println("Remote is busy.");
         remote.disconnect();
         return new StateIdling();
     }
