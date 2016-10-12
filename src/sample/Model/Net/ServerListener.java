@@ -14,7 +14,7 @@ import java.net.UnknownHostException;
  * Created by Anton on 2016-10-11.
  */
 public class ServerListener {
-    private static final int PORT = 12345;
+    private static final int PORT = 5060;
     private ServerSocket socket = null;
     private boolean listening = false;
     private ClientHandler currentClientHandler = null;
@@ -32,6 +32,7 @@ public class ServerListener {
                 if (currentClientHandler == null){
 
                     currentClientHandler = new ClientHandler(clientSocket, controller, this);
+                    currentClientHandler.setRemoteAddress(clientSocket.getInetAddress());
                     System.out.println(clientSocket.getInetAddress() +" connected.");
                 }else{
                     clientSocket.close();
@@ -39,8 +40,6 @@ public class ServerListener {
             }
 
         } catch (IOException e) {
-            System.out.println("hurrdurr");
-            e.printStackTrace();
             System.err.println(e.getMessage());
         }finally {
             if (socket != null) socket.close();
@@ -75,6 +74,7 @@ public class ServerListener {
             if(currentClientHandler == null){
                 currentClientHandler = new ClientHandler(socket, controller, this);
                 sipHandler.invokeInvite(currentClientHandler);
+                currentClientHandler.setRemoteAddress(socket.getInetAddress());
             }
 
         } catch (IOException e) {
@@ -116,7 +116,8 @@ public class ServerListener {
     }
 
     public void invokeBye(){
-        sipHandler.invokeBye(currentClientHandler);
+        if(currentClientHandler!=null)
+            sipHandler.invokeBye(currentClientHandler);
     }
 
     public void setController(Controller controller) {

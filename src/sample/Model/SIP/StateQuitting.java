@@ -16,6 +16,7 @@ public class StateQuitting extends SipState {
 
         remote.getController().setStatusLabel("Idling.");
         remote.disconnect();
+        remote.getAudioStream().stopStreaming();
         return new StateIdling();
     }
 

@@ -39,22 +39,27 @@ public class Controller {
 
     @FXML
     void callBtnPressed(ActionEvent event) {
-        int port = Integer.parseInt(inputField.getText().split(":")[1]);
-        String ip = inputField.getText().split(":")[0];
-        serverListener.inviteRemoteClient(ip, port);
+        //int port = Integer.parseInt(inputField.getText().split(":")[1]);
+        String ip = inputField.getText();
+        serverListener.inviteRemoteClient(ip, 5060);
         incomingCallStop();
     }
 
     @FXML
     void declineBtnPressed(ActionEvent event) {
-        serverListener.invokeBye();
-        incomingCallStop();
+        if(serverListener.getCurrentClientHandler()!=null){
+            serverListener.invokeBye();
+            incomingCallStop();
+        }
     }
 
     @FXML
     void byeBtnPressed(ActionEvent event){
-        if(serverListener.getCurrentClientHandler()!=null)
+        if(serverListener.getCurrentClientHandler()!=null){
             serverListener.invokeBye();
+            incomingCallStop();
+        }
+
     }
 
     public void setStatusLabel(String msg){

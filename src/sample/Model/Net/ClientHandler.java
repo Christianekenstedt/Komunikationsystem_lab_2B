@@ -19,8 +19,28 @@ public class ClientHandler {
 
     private AudioStreamUDP audioStream;
     private int remoteAudioStreamPort;
+    private InetAddress remoteAddress;
+
+    public InetAddress getRemoteAddress() {
+        return remoteAddress;
+    }
+
+    public void setRemoteAddress(InetAddress remoteAddress) {
+        this.remoteAddress = remoteAddress;
+    }
+
+    public int getRemoteAudioStreamPort() {
+        return remoteAudioStreamPort;
+    }
+
+    public void setRemoteAudioStreamPort(int remoteAudioStreamPort) {
+        this.remoteAudioStreamPort = remoteAudioStreamPort;
+    }
+
+
 
     public ClientHandler(Socket clientSocket, Controller controller, ServerListener listener) throws IOException {
+        this.audioStream = new AudioStreamUDP();
         this.listener = listener;
         this.controller = controller;
         this.socket = clientSocket;
@@ -47,11 +67,11 @@ public class ClientHandler {
                     listener.processRemoteMessage(msg);
                 }else{
                     System.out.println("Message was null.");
-                    listener.disconnectClient();
+                    disconnect();
                 }
 
             } catch (IOException e) {
-                e.printStackTrace();
+                System.out.println("Could not receive. Socket closed");
                 listener.disconnectClient();
             }
         }
@@ -68,6 +88,8 @@ public class ClientHandler {
     }
 
     public void disconnect(){
+        controller.setStatusLabel("Idling.");
+        controller.incomingCallStop();
         listener.disconnectClient();
     }
 
@@ -91,4 +113,11 @@ public class ClientHandler {
         if(out!=null)
             out.close();
     }
+
+
+
+    public AudioStreamUDP getAudioStream(){
+        return this.audioStream;
+    }
 }
+

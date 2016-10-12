@@ -21,12 +21,13 @@ public class SipHandler {
             switch(evt){
                 case INVITE_RECEIVED:
                     client.getController().incomingCallStart();
-                    //currentState = currentState.receivedInviteReceived(client);
+                    client.setRemoteAudioStreamPort(Integer.parseInt(message.split(" ")[1]));
                     break;
                 case TRO_ACK_RECEIVED:
                     currentState = currentState.receivedTROAck(client);
                     break;
                 case TRO_RECEIVED:
+                    client.setRemoteAudioStreamPort(Integer.parseInt(message.split(" ")[1]));
                     currentState = currentState.receivedTRO(client);
                     break;
                 case BYE_RECEIVED:

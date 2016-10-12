@@ -14,14 +14,14 @@ public class StateIdling extends SipState {
     @Override
     SipState receivedInviteReceived(ClientHandler remote){
 
-        remote.send("TRO");
+        remote.send("TRO " + remote.getAudioStream().getLocalPort());
         remote.getController().setStatusLabel("Ringing.");
         return new StateRinging();
     }
 
     SipState receivedInvite(ClientHandler remote){
         //send invite
-        remote.send("INVITE");
+        remote.send("INVITE " + remote.getAudioStream().getLocalPort());
         //start waiting for a tro
         remote.getController().setStatusLabel("Waiting");
         return new StateWaiting();

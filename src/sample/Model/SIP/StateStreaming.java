@@ -19,7 +19,7 @@ public class StateStreaming extends SipState {
 
     SipState receivedByeReceived(ClientHandler remote){
         remote.send("BYE_OK");
-        remote.getController().setStatusLabel("Idling.");
+        remote.getAudioStream().stopStreaming();
         remote.disconnect();
         return new StateIdling();
     }
