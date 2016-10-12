@@ -20,7 +20,15 @@ public class Controller {
     @FXML
     private Label statusLabel;
 
+    @FXML
+    private Button answerBtn;
+
     private ServerListener serverListener;
+
+    @FXML
+    void answerBtnPressed(){
+
+    }
 
     @FXML
     void callBtnPressed(ActionEvent event) {
