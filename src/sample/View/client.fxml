@@ -9,14 +9,15 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 
-
-<BorderPane fx:controller="sample.Controller.Controller" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="275.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="275.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller.Controller">
    <bottom>
       <VBox alignment="CENTER" prefHeight="135.0" prefWidth="300.0" BorderPane.alignment="CENTER">
          <children>
             <HBox alignment="CENTER" prefHeight="94.0" prefWidth="300.0" spacing="10.0">
                <children>
                   <Button fx:id="callBtn" mnemonicParsing="false" onAction="#callBtnPressed" text="Call" />
+                  <Separator orientation="VERTICAL" prefHeight="200.0" />
+                  <Button fx:id="answerBtn" mnemonicParsing="false" onAction="#answerBtnPressed" text="Answer" />
                   <Button fx:id="declineBtn" disable="true" mnemonicParsing="false" onAction="#declineBtnPressed" text="Decline" />
                </children>
             </HBox>
