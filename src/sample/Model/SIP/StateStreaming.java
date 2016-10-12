@@ -12,16 +12,19 @@ public class StateStreaming extends SipState {
     }
 
     SipState receivedBye(ClientHandler remote){
+        remote.getController().setStatusLabel("Quitting.");
+        remote.send("BYE");
         return new StateQuitting();
     }
 
     SipState receivedByeReceived(ClientHandler remote){
         remote.send("BYE_OK");
+        remote.getController().setStatusLabel("Idling.");
         return new StateIdling();
     }
 
     @Override
     String getStateName() {
-        return null;
+        return "Quitting";
     }
 }

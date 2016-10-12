@@ -14,11 +14,12 @@ public class StateQuitting extends SipState {
     @Override
     SipState receivedByeOk(ClientHandler remote){
 
+        remote.getController().setStatusLabel("Idling.");
         return new StateIdling();
     }
 
     @Override
     String getStateName() {
-        return null;
+        return "Quitting";
     }
 }

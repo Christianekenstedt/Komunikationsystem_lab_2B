@@ -22,7 +22,7 @@ public class SipHandler {
         if(evt!=null){
             switch(evt){
                 case INVITE_RECEIVED:
-                    client.getController().incommingCallStart();
+                    client.getController().incomingCallStart();
                     //currentState = currentState.receivedInviteReceived(client);
                     break;
                 case TRO_ACK_RECEIVED:

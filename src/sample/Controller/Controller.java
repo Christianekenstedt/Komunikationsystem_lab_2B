@@ -1,5 +1,6 @@
 package sample.Controller;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -27,7 +28,10 @@ public class Controller {
 
     @FXML
     void answerBtnPressed(){
-
+        if(serverListener.getCurrentClientHandler() != null){
+            serverListener.getCurrentClientHandler().invokeAcceptInvite();
+        }
+        incomingCallStop();
     }
 
     @FXML
@@ -35,26 +39,36 @@ public class Controller {
         int port = Integer.parseInt(inputField.getText().split(":")[1]);
         String ip = inputField.getText().split(":")[0];
         serverListener.inviteRemoteClient(ip, port);
-
-        declineBtn.setDisable(false);
+        incomingCallStop();
     }
 
     @FXML
     void declineBtnPressed(ActionEvent event) {
-        serverListener.getCurrentClientHandler().send("INVITE");
+        serverListener.disconnectClient();
+        incomingCallStop();
     }
 
-    void setStatusLabel(String msg){
-        statusLabel.setText(msg);
+    public void setStatusLabel(String msg){
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                statusLabel.setText(msg);
+            }
+        });
     }
 
     public void setServerListener(ServerListener serverListener){this.serverListener = serverListener;}
 
-    public void incommingCallStart(){
+    public void incomingCallStart(){
         //enable call/decline buttons
+        setStatusLabel("Incomming call");
+        answerBtn.setDisable(false);
+        declineBtn.setDisable(false);
     }
 
-    public void incommingCallStop(){
+    public void incomingCallStop(){
         //disable call/decline buttons
+        answerBtn.setDisable(true);
+        declineBtn.setDisable(true);
     }
 }

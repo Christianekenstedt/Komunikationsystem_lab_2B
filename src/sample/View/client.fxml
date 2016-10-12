@@ -17,7 +17,7 @@
                <children>
                   <Button fx:id="callBtn" mnemonicParsing="false" onAction="#callBtnPressed" text="Call" />
                   <Separator orientation="VERTICAL" prefHeight="200.0" />
-                  <Button fx:id="answerBtn" mnemonicParsing="false" onAction="#answerBtnPressed" text="Answer" />
+                  <Button fx:id="answerBtn" mnemonicParsing="false" onAction="#answerBtnPressed" text="Answer" disable="true"/>
                   <Button fx:id="declineBtn" disable="true" mnemonicParsing="false" onAction="#declineBtnPressed" text="Decline" />
                </children>
             </HBox>

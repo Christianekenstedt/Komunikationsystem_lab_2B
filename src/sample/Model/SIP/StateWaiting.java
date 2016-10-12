@@ -14,11 +14,13 @@ public class StateWaiting extends SipState {
     @Override
     SipState receivedTRO(ClientHandler remote){
         remote.send("TRO_ACK");
+
+        remote.getController().setStatusLabel("Streaming.");
         return new StateStreaming();
     }
 
     @Override
     String getStateName() {
-        return null;
+        return "Waiting";
     }
 }

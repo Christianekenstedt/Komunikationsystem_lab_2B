@@ -80,6 +80,7 @@ public class ServerListener {
         currentClientHandler = null;
 
         System.out.println("Client disconnected");
+        controller.setStatusLabel("Available.");
     }
 
     public ClientHandler getCurrentClientHandler(){

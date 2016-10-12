@@ -59,6 +59,10 @@ public class ClientHandler {
         sipHandler.invokeInvite();
     }
 
+    public void invokeAcceptInvite(){
+        sipHandler.invokeAcceptInvite();
+    }
+
     public void send(String message){
         System.out.println("Sent: " + message);
 

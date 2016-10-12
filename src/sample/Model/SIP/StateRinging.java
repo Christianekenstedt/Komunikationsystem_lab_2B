@@ -14,11 +14,12 @@ public class StateRinging extends SipState {
     @Override
     SipState receivedTROAck(ClientHandler remote){
 
+        remote.getController().setStatusLabel("Streaming");
         return new StateStreaming();
     }
 
     @Override
     String getStateName() {
-        return null;
+        return "Ringing";
     }
 }

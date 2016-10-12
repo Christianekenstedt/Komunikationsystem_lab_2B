@@ -13,9 +13,9 @@ public class StateIdling extends SipState {
 
     @Override
     SipState receivedInviteReceived(ClientHandler remote){
-        //send tro
-        remote.send("TRO");
 
+        remote.send("TRO");
+        remote.getController().setStatusLabel("Ringing.");
         return new StateRinging();
     }
 
@@ -23,11 +23,12 @@ public class StateIdling extends SipState {
         //send invite
         remote.send("INVITE");
         //start waiting for a tro
+        remote.getController().setStatusLabel("Waiting");
         return new StateWaiting();
     }
 
     @Override
     String getStateName() {
-        return null;
+        return "Idling";
     }
 }
