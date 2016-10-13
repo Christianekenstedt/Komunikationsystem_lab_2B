@@ -90,7 +90,14 @@ public class ClientHandler {
     public void disconnect(){
         controller.setStatusLabel("Idling.");
         controller.incomingCallStop();
+        closeAudioStream();
         listener.disconnectClient();
+    }
+
+    private void closeAudioStream(){
+        if (audioStream != null) {
+            audioStream.stopStreaming();
+        }
     }
 
     public void stop(){
