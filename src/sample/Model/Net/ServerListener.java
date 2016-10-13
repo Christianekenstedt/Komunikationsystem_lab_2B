@@ -40,6 +40,11 @@ public class ServerListener {
                     pw.println("BUSY");
                     pw.flush();
                     pw.close();
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                     clientSocket.close();
                 }
             }

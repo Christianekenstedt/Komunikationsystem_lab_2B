@@ -4,7 +4,6 @@ import sample.Model.Net.AudioStreamUDP;
 import sample.Model.Net.ClientHandler;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
@@ -13,23 +12,24 @@ import java.io.IOException;
  */
 public class StateWaiting extends SipState {
 
-    private Timer t;
+    private Timer callTimeout;
 
     public StateWaiting(ClientHandler remote){
         System.out.println("Waiting.");
         ActionListener al = e -> {
             System.out.println("NO ANSWER!");
             receivedBye(remote);
-            t.stop();
+            callTimeout.stop();
         };
-        t = new Timer(10000, al);
-        t.start();
+        callTimeout = new Timer(10000, al);
+        callTimeout.start();
     }
 
     @Override
     SipState receivedBye(ClientHandler remote){
         remote.send("BYE");
         remote.disconnect();
+        callTimeout.stop();
         return new StateIdling();
     }
 
@@ -37,11 +37,13 @@ public class StateWaiting extends SipState {
     SipState receivedBusy(ClientHandler remote){
         System.out.println("Remote is busy.");
         remote.disconnect();
+        callTimeout.stop();
         return new StateIdling();
     }
 
     @Override
     SipState receivedByeReceived(ClientHandler remote){
+        callTimeout.stop();
         remote.send("BYE_OK");
         remote.disconnect();
         return new StateIdling();
@@ -49,7 +51,7 @@ public class StateWaiting extends SipState {
 
     @Override
     SipState receivedTRO(ClientHandler remote){
-        t.stop();
+        callTimeout.stop();
         remote.send("TRO_ACK");
 
         remote.getController().setStatusLabel("Streaming.");
