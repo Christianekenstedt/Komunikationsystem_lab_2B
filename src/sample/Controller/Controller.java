@@ -27,6 +27,9 @@ public class Controller {
     @FXML
     private Button byeBtn;
 
+    @FXML
+    private TextField devTextField;
+
     private ServerListener serverListener;
 
     @FXML
@@ -84,5 +87,12 @@ public class Controller {
         //disable call/decline buttons
         answerBtn.setDisable(true);
         declineBtn.setDisable(true);
+    }
+
+    @FXML
+    void devSendBtnPressed(){
+        if (serverListener.getCurrentClientHandler() != null){
+            serverListener.getCurrentClientHandler().send(devTextField.getText());
+        }
     }
 }

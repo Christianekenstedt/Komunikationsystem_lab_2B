@@ -28,6 +28,23 @@
                   <Label fx:id="statusLabel" text="#STATUS" />
                </children>
             </HBox>
+            <Separator prefWidth="200.0" />
+            <Label text="Dev. area" />
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0">
+               <children>
+                  <TextField fx:id="devTextField" />
+                  <Button fx:id="devSendBtn" mnemonicParsing="false" onAction="#devSendBtnPressed" text="Send" />
+               </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <padding>
+                  <Insets left="5.0" />
+               </padding>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </HBox>
          </children>
          <BorderPane.margin>
             <Insets />
