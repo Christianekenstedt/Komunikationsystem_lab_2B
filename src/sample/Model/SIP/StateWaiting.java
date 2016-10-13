@@ -49,6 +49,7 @@ public class StateWaiting extends SipState {
 
     @Override
     SipState receivedTRO(ClientHandler remote){
+        t.stop();
         remote.send("TRO_ACK");
 
         remote.getController().setStatusLabel("Streaming.");
