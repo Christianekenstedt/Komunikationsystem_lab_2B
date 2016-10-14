@@ -8,7 +8,7 @@ import sample.Model.Net.ClientHandler;
 public class StateQuitting extends SipState {
 
     public StateQuitting(){
-        System.out.println("Quitting.");
+        System.out.println("State: Quitting.");
     }
 
     @Override

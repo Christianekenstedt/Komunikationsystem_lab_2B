@@ -21,15 +21,21 @@ public class SipHandler {
         if(evt!=null){
             switch(evt){
                 case INVITE_RECEIVED:
-                    client.getController().incomingCallStart();
-                    client.setRemoteAudioStreamPort(Integer.parseInt(message.split(" ")[1]));
+                    try{
+                        currentState = currentState.receivedInviteReceived(client, Integer.parseInt(message.split(" ")[1]));
+                    }catch(Exception e){
+                        currentState = currentState.receivedError(client);
+                    }
                     break;
                 case TRO_ACK_RECEIVED:
                     currentState = currentState.receivedTROAck(client);
                     break;
                 case TRO_RECEIVED:
-                    client.setRemoteAudioStreamPort(Integer.parseInt(message.split(" ")[1]));
-                    currentState = currentState.receivedTRO(client);
+                    try{
+                        currentState = currentState.receivedTRO(client, Integer.parseInt(message.split(" ")[1]));
+                    }catch(Exception e){
+                        currentState = currentState.receivedError(client);
+                    }
                     break;
                 case BYE_RECEIVED:
                     currentState = currentState.receivedByeReceived(client);
@@ -40,12 +46,15 @@ public class SipHandler {
                 case BUSY:
                     currentState = currentState.receivedBusy(client);
                     break;
+                case ALIVE:
+                    //do nothing. this is simply for testing if socket communication is open.
+                    break;
                 default:
                     currentState = currentState.receivedError(client);
                     break;
             }
         }else{
-            currentState = currentState.receivedError(client);
+            currentState = currentState.receivedBye(client);
         }
 
     }
@@ -66,6 +75,8 @@ public class SipHandler {
                 return SipHandler.SipEvent.BYE_OK_RECEIVED;
             case "BUSY":
                 return SipEvent.BUSY;
+            case "ALIVE":
+                return SipEvent.ALIVE;
             default:
                 return null;
         }
@@ -80,7 +91,7 @@ public class SipHandler {
     }
 
     public void invokeAcceptInvite(ClientHandler client){
-        currentState = currentState.receivedInviteReceived(client);
+        currentState = currentState.receivedInviteAccepted(client);
     }
 
     public void invokeInvite(ClientHandler client){
@@ -95,6 +106,7 @@ public class SipHandler {
         BYE_RECEIVED,
         BYE_SENT_RECEIVED,
         BYE_OK_RECEIVED,
-        BUSY
+        BUSY,
+        ALIVE
     }
 }

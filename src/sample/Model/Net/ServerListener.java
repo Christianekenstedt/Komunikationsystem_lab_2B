@@ -37,14 +37,14 @@ public class ServerListener {
                     System.out.println(clientSocket.getInetAddress() +" connected.");
                 }else{
                     PrintWriter pw = new PrintWriter(clientSocket.getOutputStream(), true);
+                    System.out.println("sent busy");
                     pw.println("BUSY");
-                    pw.flush();
-                    pw.close();
                     try {
                         Thread.sleep(1000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
+                    System.out.println("WE CLOSED THE SOCKET");
                     clientSocket.close();
                 }
             }
@@ -81,6 +81,10 @@ public class ServerListener {
         }
 
         try {
+
+            if(currentClientHandler!= null)
+                currentClientHandler.send("ALIVE"); //see if current client is alive.
+
             if(currentClientHandler == null){
                 currentClientHandler = new ClientHandler(socket, controller, this);
                 currentClientHandler.setRemoteAddress(socket.getInetAddress());
@@ -94,12 +98,9 @@ public class ServerListener {
     }
 
     public void disconnectClient(){
-        //Disconnect the client currentClientHandler
         if (currentClientHandler != null)
             currentClientHandler.stop();
-        //Set currentClientHandler = null;
         currentClientHandler = null;
-
         System.out.println("Client disconnected");
     }
 

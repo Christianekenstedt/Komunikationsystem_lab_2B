@@ -8,12 +8,12 @@ import sample.Model.Net.ClientHandler;
 public class StateStreaming extends SipState {
 
     public StateStreaming(){
-        System.out.println("Streaming.");
+        System.out.println("State: Streaming.");
     }
 
     SipState receivedBye(ClientHandler remote){
-        remote.getController().setStatusLabel("Quitting.");
         remote.send("BYE");
+        remote.getController().setStatusLabel("Quitting.");
         return new StateQuitting();
     }
 
@@ -21,6 +21,7 @@ public class StateStreaming extends SipState {
         remote.send("BYE_OK");
         remote.getAudioStream().stopStreaming();
         remote.disconnect();
+        remote.getController().setStatusLabel("Idling.");
         return new StateIdling();
     }
 

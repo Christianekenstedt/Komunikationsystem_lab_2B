@@ -11,7 +11,7 @@ import java.io.IOException;
 public class StateRinging extends SipState {
 
     public StateRinging(){
-        System.out.println("Ringing.");
+        System.out.println("State: Ringing.");
     }
 
     @Override
